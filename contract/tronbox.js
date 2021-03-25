@@ -29,8 +29,6 @@ Then, run the migration with:
     },
     nile: {
       privateKey: process.env.PRIVATE_KEY_NILE,
-      userFeePercentage: 100,
-      feeLimit: 1e8,
       fullHost: 'https://api.nileex.io',
       network_id: '3'
     },
@@ -43,8 +41,8 @@ Then, run the migration with:
       network_id: '9'
     },
     compilers: {
-      solc: {
-        version: '0.5.4'
+      solcjs: {
+        version: '1.0.1'
       }
     }
   }

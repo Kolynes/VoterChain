@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.5.4;
 
 contract VoterChainContract {
     struct Candidate {
@@ -12,15 +15,20 @@ contract VoterChainContract {
         bool registered;
     }
 
+    event CandidateAdded(address candidateAddress);
+    event VoterRegistered(address voterAddress);
+    event VoteCast(address candidateAddress);
+
     address public owner;
 
-    mapping(address => Candidate) public candidates ;
+    mapping(address => Candidate) public candidates;
+    mapping(uint => address) public candidateAddresses;
     mapping(address => Voter) public voters;
 
     uint numberOfCandidates;
     uint numberOfVoters;
 
-    constructor() {
+    constructor() public {
         owner = msg.sender;
     }
 
@@ -47,12 +55,15 @@ contract VoterChainContract {
     function registerVoter(address voterAddress, string memory name) public isOwner {
         if(voters[voterAddress].registered)
             revert("voter already registered");
-        else
+        else {
             voters[voterAddress] = Voter({
                 name: name,
                 hasVoted: false,
                 registered: true
             });
+            numberOfVoters++;
+            emit VoterRegistered(voterAddress);
+        }
     }
 
     function addCandidate(address candidateAddress, string memory name, bytes memory pictureData) public isOwner {
@@ -64,6 +75,9 @@ contract VoterChainContract {
                 pictureData: pictureData,
                 numberOfVotes: 0
             });
+            candidateAddresses[numberOfCandidates] = candidateAddress;
+            numberOfCandidates++;
+            emit CandidateAdded(candidateAddress);
             registerVoter(candidateAddress, name);
         }
     }
@@ -71,5 +85,6 @@ contract VoterChainContract {
     function vote(address candidateAddress) public isCandidate(candidateAddress) isVoter hasNotVoted {
         candidates[candidateAddress].numberOfVotes++;
         voters[msg.sender].hasVoted = true;
+        emit VoteCast(candidateAddress);
     }
 }
