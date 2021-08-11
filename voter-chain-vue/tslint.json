@@ -5,11 +5,12 @@
   ],
   "linterOptions": {
     "exclude": [
-      "node_modules/**"
+      "node_modules/**",
+      "../contracts/build/contracts/VoterChainElectionContract.json",
+      "../contracts/build/contracts/VoterChainElectionsTrackerContract.json"
     ]
   },
   "rules": {
-    "indent": [true, "spaces", 2],
     "interface-name": false,
     "no-consecutive-blank-lines": false,
     "object-literal-sort-keys": false,

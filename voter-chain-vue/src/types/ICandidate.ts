@@ -1,4 +1,5 @@
 interface ICandidate {
-    pictureData: Blob;
+    name: string;
     numberOfVotes: number;
+    address: string;
 }
